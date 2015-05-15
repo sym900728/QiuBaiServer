@@ -82,4 +82,11 @@ public class VerifyInformationTool {
 		return true;
 	}
 	
+	public static boolean verifyGetNovelsInformation(String offset, String length){
+		if("".equals(offset.trim()) || "".equals(length.trim())){
+			return false;
+		}
+		return true;
+	}
+	
 }
