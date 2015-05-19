@@ -7,21 +7,21 @@ import java.util.List;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
-import com.qiubai.dao.NovelDao;
-import com.qiubai.entity.Novel;
+import com.qiubai.dao.JokeDao;
+import com.qiubai.entity.Joke;
 import com.qiubai.tool.C3P0DBConnectionPool;
 import com.qiubai.tool.ReadProperties;
 
-public class NovelDaoImpl implements NovelDao{
+public class JokeDaoImpl implements JokeDao{
 
 	private QueryRunner queryRunner = new QueryRunner();
 	
 	@Override
-	public List<Novel> getNovels(int offset, int length) {
+	public List<Joke> getJokes(int offset, int length) {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
-		List<Novel> novels = null;
+		List<Joke> jokes = null;
 		try {
-			novels = queryRunner.query(conn, ReadProperties.read("sql", "getNovels"), new BeanListHandler<>(Novel.class), offset, length);
+			jokes = queryRunner.query(conn, ReadProperties.read("sql", "getJokes"), new BeanListHandler<>(Joke.class), offset, length);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -33,7 +33,7 @@ public class NovelDaoImpl implements NovelDao{
 				e.printStackTrace();
 			}
 		}
-		return novels;
+		return jokes;
 	}
 
 }

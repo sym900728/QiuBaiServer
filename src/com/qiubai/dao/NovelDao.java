@@ -6,5 +6,11 @@ import com.qiubai.entity.Novel;
 
 public interface NovelDao {
 	
+	/**
+	 * get novels
+	 * @param offset
+	 * @param length
+	 * @return
+	 */
 	public List<Novel> getNovels(int offset, int length);
 }

@@ -3,28 +3,24 @@ package com.qiubai.entity;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class Novel {
+public class Joke {
+
 	private int id;
 	private String belong;
-	private String image;
-	private String title;
-	private String description;
 	private String content;
 	private String time;
+	private int zan;
 	private int comments;
 
-	public Novel() {
-	}
-
-	public Novel(int id, String belong, String image, String title,
-			String description, String content, String time, int comments) {
+	public Joke(){}
+	
+	public Joke(int id, String belong, String content, String time, int zan,
+			int comments) {
 		this.id = id;
 		this.belong = belong;
-		this.image = image;
-		this.title = title;
-		this.description = description;
 		this.content = content;
 		this.time = time;
+		this.zan = zan;
 		this.comments = comments;
 	}
 
@@ -44,30 +40,6 @@ public class Novel {
 		this.belong = belong;
 	}
 
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public String getContent() {
 		return content;
 	}
@@ -84,6 +56,14 @@ public class Novel {
 		this.time = time;
 	}
 
+	public int getZan() {
+		return zan;
+	}
+
+	public void setZan(int zan) {
+		this.zan = zan;
+	}
+
 	public int getComments() {
 		return comments;
 	}
@@ -94,10 +74,9 @@ public class Novel {
 
 	@Override
 	public String toString() {
-		return "Novel [id=" + id + ", belong=" + belong + ", image=" + image
-				+ ", title=" + title + ", description=" + description
-				+ ", content=" + content + ", time=" + time + ", comments="
-				+ comments + "]";
+		return "Joke [id=" + id + ", belong=" + belong + ", content=" + content
+				+ ", time=" + time + ", zan=" + zan + ", comments=" + comments
+				+ "]";
 	}
-	
+
 }
