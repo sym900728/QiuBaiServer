@@ -18,6 +18,12 @@ public class JokeService {
 
 	private JokeDao jokeDao = new JokeDaoImpl();
 	
+	/**
+	 * get jokes
+	 * @param offset
+	 * @param length
+	 * @return
+	 */
 	@POST
 	@Path("/getJokes")
 	@Produces({ MediaType.APPLICATION_JSON })

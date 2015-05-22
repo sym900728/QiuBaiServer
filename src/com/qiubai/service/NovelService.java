@@ -19,6 +19,7 @@ public class NovelService {
 	private NovelDao novelDao = new NovelDaoImpl();
 
 	/**
+	 * get novels
 	 * @param offset
 	 * @param length
 	 * @return
