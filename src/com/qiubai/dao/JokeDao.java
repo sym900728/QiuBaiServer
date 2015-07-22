@@ -13,4 +13,19 @@ public interface JokeDao {
 	 * @return
 	 */
 	public List<Joke> getJokes(int offset, int length);
+	
+	/**
+	 * set zan
+	 * @param id
+	 * @param flag
+	 * @return
+	 */
+	public boolean setZan(int id, String flag);
+	
+	/**
+	 * get joke comments
+	 * @param id
+	 * @return
+	 */
+	public String getJokeComments(String id);
 }

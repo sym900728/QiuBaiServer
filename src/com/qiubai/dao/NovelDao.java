@@ -13,4 +13,11 @@ public interface NovelDao {
 	 * @return
 	 */
 	public List<Novel> getNovels(int offset, int length);
+	
+	/**
+	 * get novel comments
+	 * @param id
+	 * @return
+	 */
+	public String getNovelComments(String id);
 }

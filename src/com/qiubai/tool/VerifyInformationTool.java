@@ -44,10 +44,18 @@ public class VerifyInformationTool {
 		}
 	}
 	
-	public static boolean verifyCommentInformation(String token, String newsid, String userid, String content){
-		if("".equals(token.trim()) || "".equals(newsid.trim()) || "".equals(userid.trim()) || "".equals(content.trim())){
+	public static boolean verifyCommentInformation(String belong, String token, String newsid, String userid, String content){
+		if("".equals(belong.trim()) || "".equals(token.trim()) || "".equals(newsid.trim()) || "".equals(userid.trim()) || "".equals(content.trim())){
 			return false;
 		} else if (content.trim().length() > 500){
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public static boolean verifyGetCommentByIdInformation(String token, String id, String userid){
+		if("".equals(token.trim()) || "".equals(id.trim()) || "".equals(userid.trim()) ){
 			return false;
 		} else {
 			return true;
@@ -91,6 +99,13 @@ public class VerifyInformationTool {
 	
 	public static boolean verifyGetJokesInformation(String offset, String length){
 		if("".equals(offset.trim()) || "".equals(length.trim())){
+			return false;
+		}
+		return true;
+	}
+	
+	public static boolean verifySetZanInformation(String id, String flag){
+		if("".equals(id.trim()) || "".equals(flag.trim())){
 			return false;
 		}
 		return true;

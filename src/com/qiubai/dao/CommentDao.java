@@ -7,20 +7,28 @@ import com.qiubai.entity.CommentWithUser;
 
 public interface CommentDao {
 	
-	
 	/**
 	 * get comments (include user's information)
+	 * @param belong
 	 * @param newsid
 	 * @param offset
 	 * @param length
 	 * @return
 	 */
-	public List<CommentWithUser> getComments(String newsid, int offset, int length);
+	public List<CommentWithUser> getComments(String belong, String newsid, int offset, int length);
 	
 	/**
 	 * add comment
 	 * @param comment
-	 * @return true: success; false: fail
+	 * @return
 	 */
-	public boolean addComment(Comment comment);
+	public String addComment(Comment comment);
+	
+	/**
+	 * get comment by id
+	 * @param id
+	 * @return
+	 */
+	public CommentWithUser getCommentById(String id);
+	
 }

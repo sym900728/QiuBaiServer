@@ -35,4 +35,15 @@ public class NovelService {
 			return null;
 		}
 	}
+	
+	@POST
+	@Path("/getNovelComments")
+	@Produces({ MediaType.TEXT_PLAIN })
+	public String getNovelComments(@FormParam("id") String id){
+		if("".equals(id.trim())){
+			return null;
+		} else {
+			return novelDao.getNovelComments(id);
+		}
+	}
 }

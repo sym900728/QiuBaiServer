@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Comment {
 
 	private int id;
+	private String belong;
 	private int newsid;
 	private String userid;
 	private String content;
@@ -17,6 +18,14 @@ public class Comment {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getBelong() {
+		return belong;
+	}
+
+	public void setBelong(String belong) {
+		this.belong = belong;
 	}
 
 	public int getNewsid() {
@@ -53,8 +62,9 @@ public class Comment {
 
 	@Override
 	public String toString() {
-		return "Comment [id=" + id + ", newsid=" + newsid + ", userid="
-				+ userid + ", content=" + content + ", time=" + time + "]";
+		return "Comment [id=" + id + ", belong=" + belong + ", newsid="
+				+ newsid + ", userid=" + userid + ", content=" + content
+				+ ", time=" + time + "]";
 	}
 
 }

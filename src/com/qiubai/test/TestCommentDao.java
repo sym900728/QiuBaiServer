@@ -18,10 +18,11 @@ public class TestCommentDao {
 	
 	@Test
 	public void testGetComments(){
+		String belong = "novel";
 		String newsid = "320";
 		int offset = 0;
 		int length = 10;
-		List<CommentWithUser> comments = commentDao.getComments(newsid, offset, length);
+		List<CommentWithUser> comments = commentDao.getComments(belong, newsid, offset, length);
 		for(CommentWithUser cwu : comments){
 			System.out.println(cwu.getUser().toString());
 			System.out.println(cwu.getComment().toString());

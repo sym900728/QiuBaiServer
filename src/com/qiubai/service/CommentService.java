@@ -28,6 +28,7 @@ public class CommentService {
 	/**
 	 * add comment
 	 * @param token
+	 * @param belong
 	 * @param newsid
 	 * @param userid
 	 * @param content
@@ -36,11 +37,12 @@ public class CommentService {
 	@POST
 	@Path("/addComment/{token}")
 	@Produces({ MediaType.TEXT_PLAIN })
-	public String addComment(@PathParam("token") String token, 
+	public String addComment(@PathParam("token") String token,
+			@FormParam("belong") String belong,
 			@FormParam("newsid") String newsid, 
 			@FormParam("userid") String userid,
 			@FormParam("content") String content){
-		if(VerifyInformationTool.verifyCommentInformation(token, newsid, userid, content)){
+		if(VerifyInformationTool.verifyCommentInformation(belong, token, newsid, userid, content)){
 			User user = userDao.getUserIncludeToken(userid);
 			if( user == null){
 				return "fail";
@@ -49,13 +51,15 @@ public class CommentService {
 			} else {
 				Comment comment = new Comment();
 				comment.setNewsid(Integer.parseInt(newsid));
+				comment.setBelong(belong);
 				comment.setUserid(userid);
 				comment.setContent(content);
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String time = sdf.format(System.currentTimeMillis());
 				comment.setTime(time);
-				if(commentDao.addComment(comment)){
-					return "success";
+				String result = commentDao.addComment(comment);
+				if(result != null){
+					return result;
 				} else {
 					return "fail";
 				}
@@ -67,21 +71,43 @@ public class CommentService {
 	
 	/**
 	 * get comments
+	 * @param belong
 	 * @param newsid
 	 * @param offset
 	 * @param length
-	 * @return
+	 * @return a list of comments
 	 */
 	@POST
 	@Path("/getComments")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public List<CommentWithUser> getComments(@FormParam("newsid") String newsid,
+	public List<CommentWithUser> getComments(@FormParam("belong") String belong,
+			@FormParam("newsid") String newsid,
 			@FormParam("offset") String offset, 
 			@FormParam("length") String length){
-		if("".equals(newsid) || "".equals(offset) || "".equals(length)){
+		if("".equals(belong) || "".equals(newsid) || "".equals(offset) || "".equals(length)){
 			return null;
 		} else {
-			return commentDao.getComments(newsid, Integer.parseInt(offset), Integer.parseInt(length));
+			return commentDao.getComments(belong, newsid, Integer.parseInt(offset), Integer.parseInt(length));
+		}
+	}
+	
+	@POST
+	@Path("/getCommentById/{token}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public CommentWithUser getCommentById(@PathParam("token") String token,
+			@FormParam("id") String id,
+			@FormParam("userid") String userid){
+		if(VerifyInformationTool.verifyGetCommentByIdInformation(token, id, userid)){
+			User user = userDao.getUserIncludeToken(userid);
+			if( user == null){
+				return null;
+			} else if( !token.equals(user.getToken()) ){
+				return null;
+			} else {
+				return commentDao.getCommentById(id);
+			}
+		} else {
+			return null;
 		}
 	}
 }

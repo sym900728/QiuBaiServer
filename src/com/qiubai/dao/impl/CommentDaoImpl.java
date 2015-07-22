@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 
 import com.qiubai.dao.CommentDao;
 import com.qiubai.entity.Comment;
@@ -21,20 +23,22 @@ public class CommentDaoImpl implements CommentDao {
 	private QueryRunner queryRunner = new QueryRunner();
 
 	@Override
-	public List<CommentWithUser> getComments(String newsid, int offset, int length) {
+	public List<CommentWithUser> getComments(String belong, String newsid, int offset, int length) {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
 		List<CommentWithUser> comments = new ArrayList<CommentWithUser>();
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(ReadProperties.read("sql", "getCommentsWithUser"));
-			pstmt.setString(1, newsid);
-			pstmt.setInt(2, offset);
-			pstmt.setInt(3, length);
+			pstmt.setString(1, belong);
+			pstmt.setString(2, newsid);
+			pstmt.setInt(3, offset);
+			pstmt.setInt(4, length);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()){
 				CommentWithUser cwu = new CommentWithUser();
 				Comment comment = new Comment();
 				User user = new User();
 				comment.setId(rs.getInt("id"));
+				comment.setBelong(rs.getString("belong"));
 				comment.setNewsid(rs.getInt("newsid"));
 				comment.setUserid(rs.getString("userid"));
 				comment.setContent(rs.getString("content"));
@@ -60,16 +64,77 @@ public class CommentDaoImpl implements CommentDao {
 		}
 		return comments;
 	}
+	
+	@Override
+	public String addComment(Comment comment) {
+		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
+		Object param[] = {comment.getBelong(), comment.getNewsid(), comment.getUserid(), comment.getContent(), comment.getTime()};
+		try {
+			conn.setAutoCommit(false);
+			int result1 = queryRunner.update(conn, ReadProperties.read("sql", "addComment"), param);
+			int result2 = 0;
+			int result3 = 0;
+			if("joke".equals(comment.getBelong())){
+				result2 = queryRunner.update(conn, ReadProperties.read("sql", "addJokeComments"), comment.getNewsid());
+			} else if ("novel".equals(comment.getBelong())){
+				result2 = queryRunner.update(conn, ReadProperties.read("sql", "addNovelComments"), comment.getNewsid());
+			}
+			PreparedStatement pstmt = conn.prepareStatement("select last_insert_id();");
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()){
+				result3 = rs.getInt(1);
+			}			
+			conn.commit();
+			if(result1 > 0 && result2 > 0 && result3 > 0){
+				return String.valueOf(result3);
+			} else {
+				conn.rollback();
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
 
 	@Override
-	public boolean addComment(Comment comment) {
+	public CommentWithUser getCommentById(String id) {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
-		Object param[] = {comment.getNewsid(), comment.getUserid(), comment.getContent(), comment.getTime()};
+		CommentWithUser cwu = null;
 		try {
-			int result = queryRunner.update(conn, ReadProperties.read("sql", "addComment"), param);
-			if(result > 0){
-				return true;
+			PreparedStatement pstmt = conn.prepareStatement(ReadProperties.read("sql", "getCommentById"));
+			pstmt.setString(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()){
+				cwu = new CommentWithUser();
+				Comment comment = new Comment();
+				User user = new User();
+				comment.setId(rs.getInt("id"));
+				comment.setBelong(rs.getString("belong"));
+				comment.setNewsid(rs.getInt("newsid"));
+				comment.setUserid(rs.getString("userid"));
+				comment.setContent(rs.getString("content"));
+				comment.setTime(rs.getString("time"));
+				user.setUserid(rs.getString("userid"));
+				user.setNickname(rs.getString("nickname"));
+				user.setIcon(rs.getString("icon"));
+				cwu.setComment(comment);
+				cwu.setUser(user);
 			}
+			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -81,6 +146,6 @@ public class CommentDaoImpl implements CommentDao {
 				e.printStackTrace();
 			}
 		}
-		return false;
+		return cwu;
 	}
 }

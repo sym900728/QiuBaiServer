@@ -2,6 +2,7 @@ package com.qiubai.service;
 
 import java.util.List;
 
+import javax.print.attribute.standard.Media;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -33,6 +34,43 @@ public class JokeService {
 			return jokeDao.getJokes(Integer.parseInt(offset), Integer.parseInt(length));
 		} else {
 			return null;
+		}
+	}
+	
+	/**
+	 * set zan
+	 * @param id
+	 * @param flag
+	 * @return
+	 */
+	@POST
+	@Path("/setZan")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String setZan(@FormParam("id") String id,
+			@FormParam("flag") String flag){
+		if(VerifyInformationTool.verifySetZanInformation(id, flag)){
+			if(jokeDao.setZan(Integer.parseInt(id), flag)){
+				return "success";
+			} else {
+				return "fail";
+			}
+		}
+		return "fail";
+	}
+	
+	/**
+	 * get joke comments
+	 * @param id
+	 * @return
+	 */
+	@POST
+	@Path("/getJokeComments")
+	@Produces({ MediaType.TEXT_PLAIN })
+	public String getJokeComments(@FormParam("id") String id){
+		if("".equals(id)){
+			return null;
+		} else {
+			return jokeDao.getJokeComments(id);
 		}
 	}
 }

@@ -1,6 +1,8 @@
 package com.qiubai.dao.impl;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -34,6 +36,54 @@ public class JokeDaoImpl implements JokeDao{
 			}
 		}
 		return jokes;
+	}
+
+	@Override
+	public boolean setZan(int id, String flag) {
+		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
+		Object param[] = {id}; 
+		try {
+			int result = queryRunner.update(conn, Boolean.parseBoolean(flag) ? ReadProperties.read("sql", "zan") : ReadProperties.read("sql", "cancelZan"), param);
+			if(result > 0){
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(conn != null || !conn.isClosed()){
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public String getJokeComments(String id) {
+		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
+		String result = null;
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(ReadProperties.read("sql", "getJokeComments"));
+			pstmt.setInt(1, Integer.parseInt(id));
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()){
+				result = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(conn != null || !conn.isClosed()){
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
 	}
 
 }
