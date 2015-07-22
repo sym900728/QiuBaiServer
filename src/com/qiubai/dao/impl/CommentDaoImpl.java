@@ -79,7 +79,7 @@ public class CommentDaoImpl implements CommentDao {
 			} else if ("novel".equals(comment.getBelong())){
 				result2 = queryRunner.update(conn, ReadProperties.read("sql", "addNovelComments"), comment.getNewsid());
 			}
-			PreparedStatement pstmt = conn.prepareStatement("select last_insert_id();");
+			PreparedStatement pstmt = conn.prepareStatement("select last_insert_id() from tb_comment");
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()){
 				result3 = rs.getInt(1);
