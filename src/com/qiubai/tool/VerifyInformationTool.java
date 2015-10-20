@@ -111,4 +111,18 @@ public class VerifyInformationTool {
 		return true;
 	}
 	
+	public static boolean verifyGetPicturesInformation(String offset, String length){
+		if("".equals(offset.trim()) || "".equals(length.trim()) ){
+			return false;
+		}
+		return true;
+	}
+	
+	public static boolean verifyGetVideosInformation(String offset, String length){
+		if("".equals(offset.trim()) || "".equals(length.trim())){
+			return false;
+		}
+		return true;
+	}
+	
 }

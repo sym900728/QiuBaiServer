@@ -59,8 +59,8 @@ public class SystemUtil {
 	}
 	
 	public static String changePath(String path, HttpServletRequest request){
-		String ip = request.getLocalAddr().toString();
-		String port = String.valueOf(request.getLocalPort());
-		return "http://" + ip + ":" + port + "/" + path.substring(path.lastIndexOf("QiuBaiServer"));
+		//String ip = request.getLocalAddr().toString();
+		//String port = String.valueOf(request.getLocalPort());
+		return "/" + StringUtil.changeBackslashToSlash(path.substring(path.lastIndexOf("QiuBaiServer")));
 	}
 }

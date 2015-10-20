@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Novel {
+	
 	private int id;
 	private String belong;
 	private String image;
@@ -16,8 +17,8 @@ public class Novel {
 	public Novel() {
 	}
 
-	public Novel(int id, String belong, String image, String title,
-			String description, String content, String time, int comments) {
+	public Novel(int id, String belong, String image, String title, String description, String content, String time,
+			int comments) {
 		this.id = id;
 		this.belong = belong;
 		this.image = image;
@@ -94,10 +95,8 @@ public class Novel {
 
 	@Override
 	public String toString() {
-		return "Novel [id=" + id + ", belong=" + belong + ", image=" + image
-				+ ", title=" + title + ", description=" + description
-				+ ", content=" + content + ", time=" + time + ", comments="
-				+ comments + "]";
+		return "Novel [id=" + id + ", belong=" + belong + ", image=" + image + ", title=" + title + ", description="
+				+ description + ", content=" + content + ", time=" + time + ", comments=" + comments + "]";
 	}
-	
+
 }

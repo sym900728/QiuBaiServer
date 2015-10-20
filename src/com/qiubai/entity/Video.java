@@ -3,17 +3,15 @@ package com.qiubai.entity;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class Picture {
+public class Video {
 
 	private int id;
 	private String belong;
 	private String title;
-	private String image1;
-	private String image2;
-	private String image3;
+	private String image;
+	private String video;
 	private String time;
 	private int comments;
-	private int counts;
 
 	public int getId() {
 		return id;
@@ -39,28 +37,20 @@ public class Picture {
 		this.title = title;
 	}
 
-	public String getImage1() {
-		return image1;
+	public String getImage() {
+		return image;
 	}
 
-	public void setImage1(String image1) {
-		this.image1 = image1;
+	public void setImage(String image) {
+		this.image = image;
 	}
 
-	public String getImage2() {
-		return image2;
+	public String getVideo() {
+		return video;
 	}
 
-	public void setImage2(String image2) {
-		this.image2 = image2;
-	}
-
-	public String getImage3() {
-		return image3;
-	}
-
-	public void setImage3(String image3) {
-		this.image3 = image3;
+	public void setVideo(String video) {
+		this.video = video;
 	}
 
 	public String getTime() {
@@ -77,14 +67,6 @@ public class Picture {
 
 	public void setComments(int comments) {
 		this.comments = comments;
-	}
-
-	public int getCounts() {
-		return counts;
-	}
-
-	public void setCounts(int counts) {
-		this.counts = counts;
 	}
 
 }
